@@ -49,7 +49,7 @@ def get_cached_input(path):
 def get_norms(path):
     return np.load(os.path.join(path, "norms.npy"))
     
-@st.cache_data
+@st.cache_resource
 def search_for_idx(_index: faiss.IndexFlat, sel_subspace, act_idx, threshold):
     query_act = np.empty((_index.d,), dtype=np.float32)
     _index.reconstruct(act_idx, query_act)
@@ -69,7 +69,7 @@ def search_for_idx(_index: faiss.IndexFlat, sel_subspace, act_idx, threshold):
 
     return D, I
 
-@st.cache_data
+@st.cache_resource
 def make_histogram(_index: faiss.IndexFlat, sel_subspace, act_idx):
     cosine = isinstance(_index, faiss.IndexFlatIP)
     D, _ = search_for_idx(_index, sel_subspace, act_idx, -1.0 if cosine else 100000)
@@ -170,7 +170,7 @@ if readable_tokens:
     str_tokens = more_readable_gpt2_tokens(str_tokens, qwen2_byte_decoder)
 else:
     str_tokens = list(map(lambda x: x.replace("Ġ", " "), str_tokens))  # if x != "<|endoftext|>" else "[bos]"
-print(str_tokens)
+# print(str_tokens)
 str_tokens = process_special_tokens(str_tokens)
 
 if show_norm:
