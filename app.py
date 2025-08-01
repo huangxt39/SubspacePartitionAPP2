@@ -33,11 +33,11 @@ def process_special_tokens(tokens):
     return [special_tokens.get(t, t.replace("\n", "\\n")) for t in tokens]
 
 
-@st.cache_data
+@st.cache_resource
 def get_built_index(path) -> faiss.IndexFlat:
     return read_index(path)
 
-@st.cache_data
+@st.cache_resource
 def get_cached_input(path):
     with open(os.path.join(path, "str_tokens.pkl"), "rb") as f:
         cached_input = pickle.load(f)
@@ -45,7 +45,7 @@ def get_cached_input(path):
     seq_edges = list(itertools.accumulate(seq_lens, initial=0))
     return cached_input, seq_edges
 
-@st.cache_data
+@st.cache_resource
 def get_norms(path):
     return np.load(os.path.join(path, "norms.npy"))
     
